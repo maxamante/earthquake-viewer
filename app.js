@@ -1,13 +1,14 @@
 // Flow
+
+// Let user know something is loading
+$('#main').html('Loading quake data from the last 30 days...');
+
 // - [ ] Make a request to USGS
 function* requestEarthquakeData(){
   let quakeEndpoint = 'http://earthquake.usgs.gov/earthquakes/feed/v1.0/summary/all_month.geojson';
   while(true){
-    yield fetch(quakeEndpoint,{
-      method: 'get'
-    }).then(function(d){
-      var json = d.json();
-      return json;
+    yield fetch(quakeEndpoint, {method: 'get'}).then(function(d){
+      return d.json();
     });
   }
 }
@@ -15,25 +16,29 @@ function* requestEarthquakeData(){
 // - [ ] Parse request
 const quakeData = requestEarthquakeData();
 quakeData.next().value.then(function(data) {
-  let quakes = `Earthquakes from the past 30 days:<br/>`;
+  let quakes = 'Earthquakes from the past 30 days:<br/>';
   for (let quake of data['features']) {
     // - [ ] Make earthquakes clickable
     quakes += `<a class="quakeEntry" href="#">
       ${quake['id']}, ${quake['properties']['place']}
-      <div class="quakeDetails">
+      <div id="${quake['id']}" class="quakeDetails">
         ${JSON.stringify(quake, null, 2)}
       </div>
     </a><br/>`;
   }
-  document.querySelector('.main').innerHTML = quakes;
+  // Show parsed quake data
+  $('#main').html(quakes);
 
   return new Promise((resolve) => {
     // - [ ] Show detail on click
-    for (let entry of document.querySelectorAll('.quakeEntry')) {
-      entry.addEventListener('click', function(event) {
-        const currState = event.target.children[0].style.visibility;
-        event.target.children[0].style.visibility = currState === 'visible' ? 'hidden' : 'visible';
-      });
-    }
+    // First hide all details
+    $('.quakeDetails').hide();
+    // Then on click show details
+    $('.quakeEntry').each(() => {
+      $(this).click((event) => {
+        event.preventDefault();
+        $('#' + event.target.children[0].id).show();
+      })
+    });
   });
 });
