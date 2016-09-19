@@ -10,4 +10,4 @@ supports ES6. You can check if your browser is compatible [here](https://kangax.
 - [x] Barebones application
 - [ ] Prettified application
 
-(c) Maxwell Amante 2016.
+&copy; Maxwell Amante 2016.
