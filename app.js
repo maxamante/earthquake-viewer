@@ -1,7 +1,7 @@
 // Flow
 
 // Let user know something is loading
-$('#main').html('Loading quake data from the last 30 days...');
+$('#main').html('<div class="loading">Loading quake data from the last 30 days...</div>');
 
 // - [ ] Make a request to USGS
 function* requestEarthquakeData(){
@@ -16,7 +16,7 @@ function* requestEarthquakeData(){
 // - [ ] Parse request
 const quakeData = requestEarthquakeData();
 quakeData.next().value.then(function(data) {
-  let quakes = 'Earthquakes from the past 30 days:<br/>';
+  let quakes = '<div class="title">Earthquakes from the past 30 days:</div>';
   for (let quake of data['features']) {
     // - [ ] Make earthquakes clickable
     quakes += `<a class="quakeEntry" href="#">
