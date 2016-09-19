@@ -18,13 +18,22 @@ const quakeData = requestEarthquakeData();
 quakeData.next().value.then(function(data) {
   let quakes = '<div class="title">Earthquakes from the past 30 days:</div>';
   for (let quake of data['features']) {
+    let props = quake['properties'];
+    let geo = quake['geometry'];
     // - [ ] Make earthquakes clickable
-    quakes += `<a class="quakeEntry" href="#">
-      ${quake['id']}, ${quake['properties']['place']}
+    quakes += `<div class="quakeEntry">
+      ${props['title']}
       <div id="${quake['id']}" class="quakeDetails">
-        ${JSON.stringify(quake, null, 2)}
+        <ul>
+          <li>id: <a href="${props['url']}">${quake['id']}</a></li>
+          <li>place: ${props['place']}</li>
+          <li>time: ${props['time']}</li>
+          <li>magnitude: ${props['mag']}</li>
+          <li>type: ${props['type']}</li>
+          <li>coordinates: ${geo['coordinates']}</li>
+        </ul>
       </div>
-    </a><br/>`;
+    </div><br/>`;
   }
   // Show parsed quake data
   $('#main').html(quakes);
@@ -36,7 +45,6 @@ quakeData.next().value.then(function(data) {
     // Then on click show details
     $('.quakeEntry').each(() => {
       $(this).click((event) => {
-        event.preventDefault();
         $('#' + event.target.children[0].id).show();
       })
     });

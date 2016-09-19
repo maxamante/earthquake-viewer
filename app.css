@@ -14,6 +14,12 @@
 }
 
 .quakeEntry {
-  text-decoration: none;
   font-size: 18px;
+}
+.quakeEntry:hover {
+  cursor: pointer;
+}
+
+.quakeDetails {
+  padding-left: 16px;
 }
