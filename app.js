@@ -43,9 +43,16 @@ quakeData.next().value.then(function(data) {
     // First hide all details
     $('.quakeDetails').hide();
     // Then on click show details
-    $('.quakeEntry').each(() => {
-      $(this).click((event) => {
-        $('#' + event.target.children[0].id).show();
+    $('.quakeEntry').each(function() {
+      $(this).click(function(event) {
+        let detailsId = '#' + event.target.children[0].id;
+        let isVisible = $(detailsId).is(':visible');
+        if (isVisible) {
+          $(detailsId).hide();
+        }
+        else {
+          $(detailsId).show();
+        }
       })
     });
   });
