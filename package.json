@@ -1,6 +1,6 @@
 {
   "name": "earthquake-viewer",
-  "version": "0.0.1",
+  "version": "0.1.0",
   "description": "ES6-based web application that allows you to view recent earthquake activity",
   "main": "index.html",
   "scripts": {
