@@ -1,13 +1,14 @@
 // Flow
+
+// Let user know something is loading
+$('#main').html('<div class="loading">Loading quake data from the last 30 days...</div>');
+
 // - [ ] Make a request to USGS
 function* requestEarthquakeData(){
   let quakeEndpoint = 'http://earthquake.usgs.gov/earthquakes/feed/v1.0/summary/all_month.geojson';
   while(true){
-    yield fetch(quakeEndpoint,{
-      method: 'get'
-    }).then(function(d){
-      var json = d.json();
-      return json;
+    yield fetch(quakeEndpoint, {method: 'get'}).then(function(d){
+      return d.json();
     });
   }
 }
@@ -15,25 +16,44 @@ function* requestEarthquakeData(){
 // - [ ] Parse request
 const quakeData = requestEarthquakeData();
 quakeData.next().value.then(function(data) {
-  let quakes = `Earthquakes from the past 30 days:<br/>`;
+  let quakes = '<div class="title">Earthquakes from the past 30 days:</div>';
   for (let quake of data['features']) {
+    let props = quake['properties'];
+    let geo = quake['geometry'];
     // - [ ] Make earthquakes clickable
-    quakes += `<a class="quakeEntry" href="#">
-      ${quake['id']}, ${quake['properties']['place']}
-      <div class="quakeDetails">
-        ${JSON.stringify(quake, null, 2)}
+    quakes += `<div class="quakeEntry">
+      ${props['title']}
+      <div id="${quake['id']}" class="quakeDetails">
+        <ul>
+          <li>id: <a href="${props['url']}">${quake['id']}</a></li>
+          <li>place: ${props['place']}</li>
+          <li>time: ${props['time']}</li>
+          <li>magnitude: ${props['mag']}</li>
+          <li>type: ${props['type']}</li>
+          <li>coordinates: ${geo['coordinates']}</li>
+        </ul>
       </div>
-    </a><br/>`;
+    </div><br/>`;
   }
-  document.querySelector('.main').innerHTML = quakes;
+  // Show parsed quake data
+  $('#main').html(quakes);
 
   return new Promise((resolve) => {
     // - [ ] Show detail on click
-    for (let entry of document.querySelectorAll('.quakeEntry')) {
-      entry.addEventListener('click', function(event) {
-        const currState = event.target.children[0].style.visibility;
-        event.target.children[0].style.visibility = currState === 'visible' ? 'hidden' : 'visible';
-      });
-    }
+    // First hide all details
+    $('.quakeDetails').hide();
+    // Then on click show details
+    $('.quakeEntry').each(function() {
+      $(this).click(function(event) {
+        let detailsId = '#' + event.target.children[0].id;
+        let isVisible = $(detailsId).is(':visible');
+        if (isVisible) {
+          $(detailsId).hide();
+        }
+        else {
+          $(detailsId).show();
+        }
+      })
+    });
   });
 });

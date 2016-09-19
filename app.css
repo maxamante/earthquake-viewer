@@ -1,9 +1,25 @@
 
+.loading {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  font-size: 32px;
+  font-style: italic;
+}
+
+.title {
+  font-size: 22px;
+  padding-bottom: 16px;
+}
+
 .quakeEntry {
-  text-decoration: none;
   font-size: 18px;
+}
+.quakeEntry:hover {
+  cursor: pointer;
 }
 
 .quakeDetails {
-  visibility: hidden;
+  padding-left: 16px;
 }
