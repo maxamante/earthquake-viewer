@@ -4,19 +4,35 @@
 $('#main').html('<div class="loading">Loading quake data from the last 30 days...</div>');
 
 // - [ ] Make a request to USGS
-function* requestEarthquakeData(){
+const requestEarthquakeData = function*(){
   let quakeEndpoint = 'http://earthquake.usgs.gov/earthquakes/feed/v1.0/summary/all_month.geojson';
   while(true){
     yield fetch(quakeEndpoint, {method: 'get'}).then(function(d){
       return d.json();
     });
   }
-}
+};
+
+const buildPageLinks = function(total) {
+  console.log(total);
+  const entriesPerPage = 20;
+  const numPages = Math.ceil(total / entriesPerPage);
+  let links = '';
+  for (let i = 1; i < numPages - 1; i++) {
+    links += `<a href="#" class="pageLink">${i}</a> | `;
+  }
+  links += `<a href="#" class="pageLink">${numPages}</a>`;
+
+  return links;
+};
 
 // - [ ] Parse request
 const quakeData = requestEarthquakeData();
 quakeData.next().value.then(function(data) {
-  let quakes = '<div class="title">Earthquakes from the past 30 days:</div>';
+  let pageLinks = buildPageLinks(data['features'].length);
+  let quakes = `
+    <div class="pageLinks">${pageLinks}</div>
+    <div class="title">Earthquakes from the past 30 days:</div>`;
   for (let quake of data['features']) {
     let props = quake['properties'];
     let geo = quake['geometry'];
