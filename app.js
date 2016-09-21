@@ -18,12 +18,19 @@ const buildPageLinks = function(total) {
   const entriesPerPage = 20;
   const numPages = Math.ceil(total / entriesPerPage);
   let links = '';
-  for (let i = 1; i < numPages - 1; i++) {
+
+  for (let i = 1; i < 11; i++) {
     links += `<a href="#" class="pageLink">${i}</a> | `;
   }
-  links += `<a href="#" class="pageLink">${numPages}</a>`;
+  if (numPages > 11) {
+    links += `... <a href="#" class="pageLink">${numPages}</a>`;
+  }
 
   return links;
+};
+
+const computeDate = function(timestamp) {
+  return new Date(timestamp).toLocaleDateString();
 };
 
 // - [ ] Parse request
@@ -36,9 +43,10 @@ quakeData.next().value.then(function(data) {
   for (let quake of data['features']) {
     let props = quake['properties'];
     let geo = quake['geometry'];
+    let date = computeDate(props['time']);
     // - [ ] Make earthquakes clickable
     quakes += `<div class="quakeEntry">
-      ${props['title']}
+      ${date} - ${props['title']}
       <div id="${quake['id']}" class="quakeDetails">
         <ul>
           <li>id: <a href="${props['url']}">${quake['id']}</a></li>
