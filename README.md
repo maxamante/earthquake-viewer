@@ -10,4 +10,13 @@ supports ES6. You can check if your browser is compatible [here](https://kangax.
 - [x] Barebones application
 - [ ] Prettified application
 
+Version 1:
+- [ ] Pagination
+  - [ ] Different amounts per page
+- [ ] Select different time ranges
+- [ ] Select different magnitudes
+- [ ] Find by distance
+- [ ] Add map view
+- [ ] Allow different refresh intervals
+
 &copy; Maxwell Amante 2016.
