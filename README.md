@@ -12,7 +12,7 @@ supports ES6. You can check if your browser is compatible [here](https://kangax.
 
 Version 1:
 - [ ] Pagination
-  - [ ] Different amounts per page
+  - [ ] Specify amount per page
 - [ ] Select different time ranges
 - [ ] Select different magnitudes
 - [ ] Find by distance
