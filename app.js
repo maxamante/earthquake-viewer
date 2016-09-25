@@ -1,5 +1,3 @@
-// Flow
-
 // - [ ] Make a request to USGS
 const requestEarthquakeData = function*(){
   const quakeEndpoint = 'http://earthquake.usgs.gov/earthquakes/feed/v1.0/summary/all_month.geojson';
@@ -10,19 +8,13 @@ const requestEarthquakeData = function*(){
   }
 };
 const refreshQuakeData = function() {
-  requestEarthquakeData().next().value.then(function(data) {
-    parseQuakeData(data);
-    return data;
-  });
+  return requestEarthquakeData().next().value.then(data => parseQuakeData(data));
 };
 
 // - [ ] Parse request
 const parseQuakeData = function(data) {
-  let appNav = buildAppNav();
   let pageLinks = buildPageLinks(data['features'].length);
-
-  let quakes = `<div class="nav">${appNav}</div>`;
-  quakes += '<div class="title">Earthquakes from the past 30 days:</div>';
+  let quakes = '<div class="title">Earthquakes from the past 30 days:</div>';
   quakes += `<div class="pageLinks">${pageLinks}</div>`;
   for (let quake of data['features']) {
     let props = quake['properties'];
@@ -44,25 +36,7 @@ const parseQuakeData = function(data) {
       </div>
     </div><br/>`;
   }
-  // Show parsed quake data
-  $('#main').html(quakes);
-
-  // - [ ] Show detail on click
-  // First hide all details
-  $('.quakeDetails').hide();
-  // Then on click show details
-  $('.quakeEntry').each(function() {
-    $(this).click(function(event) {
-      let detailsId = '#' + event.target.children[0].id;
-      let isVisible = $(detailsId).is(':visible');
-      if (isVisible) {
-        $(detailsId).hide();
-      }
-      else {
-        $(detailsId).show();
-      }
-    })
-  });
+  return quakes;
 };
 
 const buildAppNav = function() {
@@ -121,6 +95,32 @@ const computeTime = function(timestamp) {
 const main = function() {
   // Let user know something is loading
   $('#main').html('<div class="loading">Loading quake data from the last 30 days...</div>');
-  let currQuakeData = refreshQuakeData();
+
+  // Build app
+  let appNav = buildAppNav();
+  let app = `<div class="nav">${appNav}</div>`;
+  let quakeData = refreshQuakeData();
+  quakeData.then(function(data) {
+    // Show parsed quake data
+    $('#main').html(app + data);
+
+    // Set app UX
+    // - [ ] Show detail on click
+    // First hide all details
+    $('.quakeDetails').hide();
+    // Then on click show details
+    $('.quakeEntry').each(function() {
+      $(this).click(function(event) {
+        let detailsId = '#' + event.target.children[0].id;
+        let isVisible = $(detailsId).is(':visible');
+        if (isVisible) {
+          $(detailsId).hide();
+        }
+        else {
+          $(detailsId).show();
+        }
+      })
+    });
+  });
 };
 main();
