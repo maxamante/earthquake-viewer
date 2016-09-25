@@ -2,62 +2,75 @@
 
 // - [ ] Make a request to USGS
 const requestEarthquakeData = function*(){
-  let quakeEndpoint = 'http://earthquake.usgs.gov/earthquakes/feed/v1.0/summary/all_month.geojson';
+  const quakeEndpoint = 'http://earthquake.usgs.gov/earthquakes/feed/v1.0/summary/all_month.geojson';
   while(true){
     yield fetch(quakeEndpoint, {method: 'get'}).then(function(d){
       return d.json();
     });
   }
 };
-// - [ ] Parse request
-const quakeData = requestEarthquakeData();
 const refreshQuakeData = function() {
-  quakeData.next().value.then(function(data) {
-    let pageLinks = buildPageLinks(data['features'].length);
-    let quakes = `<div class="title">Earthquakes from the past 30 days:</div>`;
-    quakes += `<div class="pageLinks">${pageLinks}</div>`;
-
-    for (let quake of data['features']) {
-      let props = quake['properties'];
-      let geo = quake['geometry'];
-      let date = computeDate(props['time']);
-      let time = computeTime(props['time']);
-      // - [ ] Make earthquakes clickable
-      quakes += `<div class="quakeEntry">
-        ${date} - ${props['title']}
-        <div id="${quake['id']}" class="quakeDetails">
-          <ul>
-            <li>id: <a href="${props['url']}">${quake['id']}</a></li>
-            <li>place: ${props['place']}</li>
-            <li>time: ${time}</li>
-            <li>magnitude: ${props['mag']}</li>
-            <li>type: ${props['type']}</li>
-            <li>coordinates: ${geo['coordinates']}</li>
-          </ul>
-        </div>
-      </div><br/>`;
-    }
-    // Show parsed quake data
-    $('#main').html(quakes);
-
-    // - [ ] Show detail on click
-    // First hide all details
-    $('.quakeDetails').hide();
-    // Then on click show details
-    $('.quakeEntry').each(function() {
-      $(this).click(function(event) {
-        let detailsId = '#' + event.target.children[0].id;
-        let isVisible = $(detailsId).is(':visible');
-        if (isVisible) {
-          $(detailsId).hide();
-        }
-        else {
-          $(detailsId).show();
-        }
-      })
-    });
+  requestEarthquakeData().next().value.then(function(data) {
+    parseQuakeData(data);
+    return data;
   });
-}
+};
+
+// - [ ] Parse request
+const parseQuakeData = function(data) {
+  let appNav = buildAppNav();
+  let pageLinks = buildPageLinks(data['features'].length);
+
+  let quakes = `<div class="nav">${appNav}</div>`;
+  quakes += '<div class="title">Earthquakes from the past 30 days:</div>';
+  quakes += `<div class="pageLinks">${pageLinks}</div>`;
+  for (let quake of data['features']) {
+    let props = quake['properties'];
+    let geo = quake['geometry'];
+    let date = computeDate(props['time']);
+    let time = computeTime(props['time']);
+    // - [ ] Make earthquakes clickable
+    quakes += `<div class="quakeEntry">
+      ${date} - ${props['title']}
+      <div id="${quake['id']}" class="quakeDetails">
+        <ul>
+          <li>id: <a href="${props['url']}">${quake['id']}</a></li>
+          <li>place: ${props['place']}</li>
+          <li>time: ${time}</li>
+          <li>magnitude: ${props['mag']}</li>
+          <li>type: ${props['type']}</li>
+          <li>coordinates: ${geo['coordinates']}</li>
+        </ul>
+      </div>
+    </div><br/>`;
+  }
+  // Show parsed quake data
+  $('#main').html(quakes);
+
+  // - [ ] Show detail on click
+  // First hide all details
+  $('.quakeDetails').hide();
+  // Then on click show details
+  $('.quakeEntry').each(function() {
+    $(this).click(function(event) {
+      let detailsId = '#' + event.target.children[0].id;
+      let isVisible = $(detailsId).is(':visible');
+      if (isVisible) {
+        $(detailsId).hide();
+      }
+      else {
+        $(detailsId).show();
+      }
+    })
+  });
+};
+
+const buildAppNav = function() {
+  let nav = '<a href="#refresh" class="button refresh">Refresh</a> ';
+  nav += '<a href="#share" class="button share">Share</a> ';
+  nav += '<a href="#change" class="button change">Change Days</a>';
+  return nav;
+};
 
 const buildPageLinks = function(total) {
   const entriesPerPage = 20;
@@ -108,6 +121,6 @@ const computeTime = function(timestamp) {
 const main = function() {
   // Let user know something is loading
   $('#main').html('<div class="loading">Loading quake data from the last 30 days...</div>');
-  refreshQuakeData();
+  let currQuakeData = refreshQuakeData();
 }
 main();
