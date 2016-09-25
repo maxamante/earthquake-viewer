@@ -115,12 +115,12 @@ const computeDate = function(timestamp) {
 
 const computeTime = function(timestamp) {
   return new Date(timestamp).toLocaleTimeString();
-}
+};
 
 //main()
 const main = function() {
   // Let user know something is loading
   $('#main').html('<div class="loading">Loading quake data from the last 30 days...</div>');
   let currQuakeData = refreshQuakeData();
-}
+};
 main();
