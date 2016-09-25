@@ -9,67 +9,11 @@ const requestEarthquakeData = function*(){
     });
   }
 };
-
-const buildPageLinks = function(total) {
-  const entriesPerPage = 20;
-  const numPages = Math.ceil(total / entriesPerPage);
-  const currPage = window.location.hash.split('#')[1];
-
-  let links = '<a href="#" class="backPage"><</a> ';
-  links += buildPageLinksWithContext(currPage);
-  links += ' <a href="#" class="nextPage">></a>';
-
-  return links;
-};
-
-const buildPageLinksWithContext = function(currPage) {
-  // Validate params
-  currPage = currPage != '' && parseInt(currPage) || 1;
-
-  const maxPageLinks = 9;
-  const links = new Array(maxPageLinks);
-
-  if (currPage < Math.round(maxPageLinks / 2)) {
-    for (let i = 0; i < links.length; i++) {
-      const linkNum = i + 1;
-      links[i] = `<a href="#${linkNum}" class="pageLink">${linkNum}</a> | `;
-    }
-    links[currPage - 1] = `<span class="currPage">${currPage}</span> | `;
-  }
-  // Build links with current page context
-  else {
-    for (let i = (currPage - 5); i < currPage; i++) {
-      const linkNum = i + 1;
-      links[i] = `<a href="#${linkNum}" class="pageLink">${linkNum}</a> | `;
-    }
-    links[currPage - 1] = `<span class="currPage">${currPage}</span> | `;
-    for (let i = currPage; i < currPage + 4; i++) {
-      const linkNum = i + 1;
-      links[i] = `<a href="#${linkNum}" class="pageLink">${linkNum}</a> | `;
-    }
-  }
-
-  return links.join('');
-};
-
-const computeDate = function(timestamp) {
-  return new Date(timestamp).toLocaleDateString();
-};
-
-const computeTime = function(timestamp) {
-  return new Date(timestamp).toLocaleTimeString();
-}
-
-//main()
-const main = function() {
-  // - [ ] Parse request
-  const quakeData = requestEarthquakeData();
-  // Let user know something is loading
-  $('#main').html('<div class="loading">Loading quake data from the last 30 days...</div>');
-
+// - [ ] Parse request
+const quakeData = requestEarthquakeData();
+const refreshQuakeData = function() {
   quakeData.next().value.then(function(data) {
     let pageLinks = buildPageLinks(data['features'].length);
-    console.log(pageLinks);
     let quakes = `<div class="title">Earthquakes from the past 30 days:</div>`;
     quakes += `<div class="pageLinks">${pageLinks}</div>`;
 
@@ -113,5 +57,57 @@ const main = function() {
       })
     });
   });
+}
+
+const buildPageLinks = function(total) {
+  const entriesPerPage = 20;
+  const numPages = Math.ceil(total / entriesPerPage);
+  const currPage = window.location.hash.split('#')[1];
+
+  let links = '<a href="#" class="backPage"><</a> ';
+  links += buildPageLinksWithContext(currPage);
+  links += ' <a href="#" class="nextPage">></a>';
+
+  return links;
+};
+
+const buildPageLinksWithContext = function(currPage) {
+  // Validate params
+  currPage = currPage != '' && parseInt(currPage) || 1;
+
+  const maxPageLinks = 9;
+  const links = new Array(maxPageLinks);
+  const startNum = computePageLinkStartNum(currPage, maxPageLinks);
+  const lastLinkNum = startNum + maxPageLinks;
+
+  for (let i = startNum; i < lastLinkNum; i++) {
+    const linkNum = i + 1;
+    links[i] = `<a href="#${linkNum}" class="pageLink">${linkNum}</a> | `;
+  }
+  links[currPage - 1] = `<span class="currPage">${currPage}</span> | `;
+  links[lastLinkNum - 1] = links[lastLinkNum - 1].split('|')[0];
+  return links.join('');
+};
+
+const computePageLinkStartNum = function(currPage, maxPageLinks) {
+  if (currPage >= Math.round(maxPageLinks / 2)) {
+    return currPage - 5;
+  }
+  return 0;
+};
+
+const computeDate = function(timestamp) {
+  return new Date(timestamp).toLocaleDateString();
+};
+
+const computeTime = function(timestamp) {
+  return new Date(timestamp).toLocaleTimeString();
+}
+
+//main()
+const main = function() {
+  // Let user know something is loading
+  $('#main').html('<div class="loading">Loading quake data from the last 30 days...</div>');
+  refreshQuakeData();
 }
 main();
