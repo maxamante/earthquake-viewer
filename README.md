@@ -11,12 +11,13 @@ supports ES6. You can check if your browser is compatible [here](https://kangax.
 - [ ] Prettified application
 
 Version 1:
-- [ ] Pagination
+- [x] Pagination
   - [ ] Specify amount per page
 - [ ] Select different time ranges
 - [ ] Select different magnitudes
 - [ ] Find by distance
 - [ ] Add map view
+- [ ] Implement refresh every 5 minutes for freshest data
 - [ ] Allow different refresh intervals
 
 &copy; Maxwell Amante 2016.
