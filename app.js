@@ -92,7 +92,7 @@ const buildPageLinksWithContext = function(currPage, totalPages) {
 
 const computePageLinkStartNum = function(currPage, totalPages, maxPageLinks) {
   const middleLinkIndex = Math.round(maxPageLinks / 2);
-  if (currPage >= totalPages - middleLinkIndex) {
+  if (currPage >= totalPages - middleLinkIndex + 1) {
     return totalPages - 9;
   }
   else if (currPage >= middleLinkIndex) {
