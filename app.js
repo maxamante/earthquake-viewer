@@ -1,3 +1,66 @@
+'use strict';
+
+// simple jquery port
+const $ = function(selector) {
+  const entries = (() => {
+    if (typeof selector === 'string') {
+      return document.querySelectorAll(selector);
+    }
+    return selector;
+  })();
+
+  entries.html = function(newHtml) {
+    if (newHtml === undefined) {
+      return entries.innerHTML;
+    }
+    for (let i = 0; i < entries.length; i++) {
+      let entry = entries[i];
+      entry.innerHTML = newHtml;
+    }
+  };
+
+  entries.hide = function() {
+    for (let i = 0; i < entries.length; i++) {
+      let entry = entries[i];
+      entry.style.display = 'none';
+    }
+  };
+
+  entries.show = function() {
+    for (let i = 0; i < entries.length; i++) {
+      let entry = entries[i];
+      entry.style.display = '';
+    }
+  };
+
+  entries.each = function(fn) {
+    Array.prototype.forEach.call(entries, fn);
+  };
+
+  entries.click = function(fn) {
+    selector.addEventListener("click", fn, false);
+  };
+
+  entries.is = function(otherSelector) {
+    let el = entries[0];
+    console.log(otherSelector);
+    if (otherSelector === ':visible') {
+      return el.offsetWidth > 0 || el.offsetHeight > 0;
+    }
+    return (el.matches ||
+            el.matchesSelector ||
+            el.msMatchesSelector ||
+            el.mozMatchesSelector ||
+            el.webkitMatchesSelector ||
+            el.oMatchesSelector)
+            .call(el, otherSelector);
+  }
+
+  return entries;
+}
+// setup aliases
+window.$ = $;
+
 // - [ ] Make a request to USGS
 const requestEarthquakeData = function*(){
   const quakeEndpoint = 'http://earthquake.usgs.gov/earthquakes/feed/v1.0/summary/all_month.geojson';
@@ -147,9 +210,10 @@ const setInteractions = function() {
   // - [ ] Show detail on click
   // First hide all details
   $('.quakeDetails').hide();
+
   // Then on click show details
-  $('.quakeEntry').each(function() {
-    $(this).click(function(event) {
+  $('.quakeEntry').each(function(entry, i) {
+    $(entry).click(function(event) {
       let detailsId = '#' + event.target.children[0].id;
       let isVisible = $(detailsId).is(':visible');
       if (isVisible) {
@@ -173,6 +237,7 @@ const handleHashChange = function(event) {
 const main = function() {
   // preload ops
   // Let user know something is loading
+  console.log($('#main'));
   $('#main').html('<div class="loading">Loading quake data from the last 30 days...</div>');
 
   // load ops
