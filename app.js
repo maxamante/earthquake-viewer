@@ -237,7 +237,6 @@ const handleHashChange = function(event) {
 const main = function() {
   // preload ops
   // Let user know something is loading
-  console.log($('#main'));
   $('#main').html('<div class="loading">Loading quake data from the last 30 days...</div>');
 
   // load ops
@@ -251,3 +250,11 @@ const main = function() {
   window.addEventListener('hashchange', handleHashChange, false);
 };
 main();
+
+// try-catch hack to allow testing, but avoid console error
+try {
+exports = module.exports = {
+  computeNextPage
+};
+}
+catch(err) {}
