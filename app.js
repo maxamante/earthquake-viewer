@@ -1,7 +1,10 @@
 'use strict';
+// To allow
+let ns = {};
 
 // simple jquery port
-const $ = function(selector) {
+// setup aliases
+const $ = ns.$ = window.$ = function(selector) {
   const entries = (() => {
     if (typeof selector === 'string') {
       return document.querySelectorAll(selector);
@@ -58,11 +61,9 @@ const $ = function(selector) {
 
   return entries;
 }
-// setup aliases
-window.$ = $;
 
 // - [ ] Make a request to USGS
-const requestEarthquakeData = function*(){
+const requestEarthquakeData = ns.requestEarthquakeData = function*(){
   const quakeEndpoint = 'http://earthquake.usgs.gov/earthquakes/feed/v1.0/summary/all_month.geojson';
   while(true){
     yield fetch(quakeEndpoint, {method: 'get'}).then(function(d){
@@ -70,12 +71,12 @@ const requestEarthquakeData = function*(){
     });
   }
 };
-const refreshQuakeData = function() {
+const refreshQuakeData = ns.refreshQuakeData = function() {
   return requestEarthquakeData().next().value.then(data => data);
 };
 
 // - [ ] Parse request
-const parseQuakeData = function(data) {
+const parseQuakeData = ns.parseQuakeData = function(data) {
   const entriesPerPage = 20;
   const quakeEntries = data['features'];
   const totalEntries = quakeEntries.length;
@@ -112,14 +113,14 @@ const parseQuakeData = function(data) {
   return quakes;
 };
 
-const buildAppNav = function() {
+const buildAppNav = ns.buildAppNav = function() {
   let nav = '<a href="#refresh" class="button refresh">Refresh</a> ';
   nav += '<a href="#share" class="button share">Share</a> ';
   // nav += '<a href="#change" class="button change">Change Days</a>';
   return nav;
 };
 
-const buildPageLinks = function(totalEntries) {
+const buildPageLinks = ns.buildPageLinks = function(totalEntries) {
   totalEntries = totalEntries || quakeData['features'].length;
 
   const entriesPerPage = 20;
@@ -135,7 +136,7 @@ const buildPageLinks = function(totalEntries) {
   return links;
 };
 
-const buildPageLinksWithContext = function(currPage, totalPages) {
+const buildPageLinksWithContext = ns.buildPageLinksWithContext = function(currPage, totalPages) {
   // Validate params
   currPage = currPage != '' && parseInt(currPage) || 1;
 
@@ -153,7 +154,7 @@ const buildPageLinksWithContext = function(currPage, totalPages) {
   return links.join('');
 };
 
-const computePageLinkStartNum = function(currPage, totalPages, maxPageLinks) {
+const computePageLinkStartNum = ns.computePageLinkStartNum = function(currPage, totalPages, maxPageLinks) {
   const middleLinkIndex = Math.round(maxPageLinks / 2);
   if (currPage >= totalPages - middleLinkIndex + 1) {
     return totalPages - 9;
@@ -164,29 +165,29 @@ const computePageLinkStartNum = function(currPage, totalPages, maxPageLinks) {
   return 0;
 };
 
-const computeDate = function(timestamp) {
+const computeDate = ns.computeDate = function(timestamp) {
   return new Date(timestamp).toLocaleDateString();
 };
 
-const computeTime = function(timestamp) {
+const computeTime = ns.computeTime = function(timestamp) {
   return new Date(timestamp).toLocaleTimeString();
 };
 
-const computeNextPage = function(currPage, totalPages) {
+const computeNextPage = ns.computeNextPage = function(currPage, totalPages) {
   if (currPage + 1 < totalPages) {
     return currPage + 1;
   }
   return totalPages;
 };
 
-const computeBackPage = function(currPage) {
+const computeBackPage = ns.computeBackPage = function(currPage) {
   if (currPage - 1 > 0) {
     return currPage - 1;
   }
   return 1;
 };
 
-const initApp = function(data) {
+const initApp = ns.initApp = function(data) {
   let appNav = buildAppNav();
   let app = `<div class="nav">${appNav}</div>`;
 
@@ -204,7 +205,7 @@ const initApp = function(data) {
   setInteractions();
 };
 
-const setInteractions = function() {
+const setInteractions = ns.setInteractions = function() {
   // Set app UX
   // - [ ] Make earthquakes clickable
   // - [ ] Show detail on click
@@ -227,14 +228,14 @@ const setInteractions = function() {
 };
 
 let quakeData;
-const handleHashChange = function(event) {
+const handleHashChange = ns.handleHashChange = function(event) {
   $('.pageLinks').html(buildPageLinks());
   $('.quakes').html(parseQuakeData(quakeData));
   setInteractions();
 }
 
 //main()
-const main = function() {
+const main = ns.main = function() {
   // preload ops
   // Let user know something is loading
   $('#main').html('<div class="loading">Loading quake data from the last 30 days...</div>');
@@ -248,13 +249,10 @@ const main = function() {
   });
 
   window.addEventListener('hashchange', handleHashChange, false);
+  return 0;
 };
 main();
 
 // try-catch hack to allow testing, but avoid console error
-try {
-exports = module.exports = {
-  computeNextPage
-};
-}
-catch(err) {}
+try {exports = module.exports = ns;}
+catch(err) {/* Expected; No action*/}
