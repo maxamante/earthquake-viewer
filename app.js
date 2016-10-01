@@ -128,7 +128,7 @@ const buildPageLinks = ns.buildPageLinks = function(totalEntries) {
   const totalPages = Math.round(totalEntries / entriesPerPage);
 
   let links = `<a href="#1" class="firstPage"><<</a> `;
-  links += `<a href="#${computeBackPage(currPage)}" class="backPage"><</a> `;
+  links += `<a href="#${computeBackPage(currPage, totalPages)}" class="backPage"><</a> `;
   links += buildPageLinksWithContext(currPage, totalPages);
   links += ` <a href="#${computeNextPage(currPage, totalPages)}" class="nextPage">></a>`;
   links += ` <a href="#${totalPages}" class="lastPage">>></a>`;
@@ -174,17 +174,25 @@ const computeTime = ns.computeTime = function(timestamp) {
 };
 
 const computeNextPage = ns.computeNextPage = function(currPage, totalPages) {
-  if (currPage + 1 < totalPages) {
-    return currPage + 1;
+  let nextPage = totalPages;
+  if (currPage < 2) {
+    nextPage = 2;
   }
-  return totalPages;
+  else if (currPage + 1 < totalPages) {
+    nextPage = currPage + 1;
+  }
+  return nextPage;
 };
 
-const computeBackPage = ns.computeBackPage = function(currPage) {
-  if (currPage - 1 > 0) {
-    return currPage - 1;
+const computeBackPage = ns.computeBackPage = function(currPage, totalPages) {
+  let backPage = 1;
+  if (currPage > totalPages) {
+    backPage = totalPages - 1;
   }
-  return 1;
+  else if (currPage - 1 > 0) {
+    backPage = currPage - 1;
+  }
+  return backPage;
 };
 
 const initApp = ns.initApp = function(data) {
