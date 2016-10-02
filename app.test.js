@@ -21,15 +21,13 @@ describe('buildPageLinks', () => {
     const expected = '' +
       '<a href="#1" class="firstPage"><<</a> '+
       '<a href="#4" class="backPage"><</a> '+
-      '<a href="#1" class="pageLink">1</a> | '+
       '<a href="#2" class="pageLink">2</a> | '+
       '<a href="#3" class="pageLink">3</a> | '+
       '<a href="#4" class="pageLink">4</a> | '+
       '<span class="currPage">5</span> | '+
       '<a href="#6" class="pageLink">6</a> | '+
       '<a href="#7" class="pageLink">7</a> | '+
-      '<a href="#8" class="pageLink">8</a> | '+
-      '<a href="#9" class="pageLink">9</a> '+
+      '<a href="#8" class="pageLink">8</a> '+
       '<a href="#6" class="nextPage">></a> '+
       '<a href="#20" class="lastPage">>></a>'+
     '';
@@ -42,15 +40,13 @@ describe('buildPageLinksWithContext', () => {
     const currPage = 5;
     const totalPages = 20;
     const expected = '' +
-      '<a href="#1" class="pageLink">1</a> | '+
       '<a href="#2" class="pageLink">2</a> | '+
       '<a href="#3" class="pageLink">3</a> | '+
       '<a href="#4" class="pageLink">4</a> | '+
       '<span class="currPage">5</span> | '+
       '<a href="#6" class="pageLink">6</a> | '+
       '<a href="#7" class="pageLink">7</a> | '+
-      '<a href="#8" class="pageLink">8</a> | '+
-      '<a href="#9" class="pageLink">9</a>'+
+      '<a href="#8" class="pageLink">8</a>'+
     '';
     expect(app.buildPageLinksWithContext(currPage, totalPages)).toBe(expected);
   });
@@ -59,15 +55,13 @@ describe('buildPageLinksWithContext', () => {
     const currPage = 13;
     const totalPages = 20;
     const expected = '' +
-      '<a href="#9" class="pageLink">9</a> | '+
       '<a href="#10" class="pageLink">10</a> | '+
       '<a href="#11" class="pageLink">11</a> | '+
       '<a href="#12" class="pageLink">12</a> | '+
       '<span class="currPage">13</span> | '+
       '<a href="#14" class="pageLink">14</a> | '+
       '<a href="#15" class="pageLink">15</a> | '+
-      '<a href="#16" class="pageLink">16</a> | '+
-      '<a href="#17" class="pageLink">17</a>'+
+      '<a href="#16" class="pageLink">16</a>'+
     '';
     expect(app.buildPageLinksWithContext(currPage, totalPages)).toBe(expected);
   });
