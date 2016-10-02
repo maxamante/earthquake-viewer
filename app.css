@@ -1,3 +1,18 @@
+/* Meyer's reset */
+html,body,div,span,applet,object,iframe,a,abbr,acronym,address,big,cite,code,del,dfn,em,font,img,ins,kbd,q,s,samp,small,strike,strong,sub,sup,tt,var,dl,dt,dd,ol,ul,li,h1,h2,h3,h4,h5,h6,pre,form,fieldset,input,textarea,label,legend,p,blockquote,table,caption,tbody,tfoot,thead,tr,th,td{margin:0;padding:0;border:0;outline:0;font-weight:inherit;font-style:inherit;font-size:100%;font-family:inherit;vertical-align:baseline;}body{line-height:1;color:black;background:white;}:focus{outline:0;}table{border-collapse:collapse;border-spacing:0;}caption,th,td{text-align:left;font-weight:normal;}fieldset,img{border:0;}address,caption,cite,code,dfn,em,strong,th,var{font-style:normal;font-weight:normal;}ol,ul{list-style:none;}h1,h2,h3,h4,h5,h6{font-size:100%;font-weight:normal;}blockquote:before,blockquote:after,q:before,q:after{content:"";}blockquote,q{quotes:"" "";}abbr,acronym{border:0;}
+
+/*FONT COLOR: #FBF9EC */
+/*ACCENT: #F3D4B5 */
+/*ACCENT2: #AD5F55 */
+/*ACCENT3: #D5D6EB */
+/*BG: #2C2827 */
+/*BG2: #4E4946 */
+
+html, body {
+  background-color: #2C2827;
+  color: #FBF9EC;
+  font-family: 'Open Sans', sans-serif;
+}
 
 .loading {
   position: absolute;
@@ -8,18 +23,112 @@
   font-style: italic;
 }
 
-.title {
-  font-size: 22px;
-  padding-bottom: 16px;
+#main {
+  height: 100vh;
 }
 
-.quakeEntry {
+#main .titleImg {
+  height: 45%;
+  background-size: cover;
+  background:
+    /* top, transparent red, faked with gradient */
+    linear-gradient(
+      rgba(222, 162, 121, 0.6),
+      rgba(193, 105, 55, 0.8)
+    ),
+    /* bottom, image */
+    url(earthquake.jpg);
+  text-align: center;
+  position: relative;
+}
+#main .title {
+  font-family: 'Titillium Web', sans-serif;
+  font-weight: 900;
+  color: #FBF9EC;
+  font-size: 56pt;
+  letter-spacing: 4px;
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+}
+#main .richterAnim {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-12%, -38%);
+}
+#main .richterPath {
+  stroke-dasharray: 1000;
+  stroke-dashoffset: 1000;
+  animation: dash 1s linear alternate forwards;
+}
+@keyframes dash {
+  from {
+    stroke-dashoffset: 1000;
+  }
+  to {
+    stroke-dashoffset: 435;
+  }
+}
+
+#main .listTitle {
+  padding-top: 24px;
+  padding-left: 16px;
+  font-size: 22px;
+  padding-bottom: 16px;
+  color: #F3D4B5;
+}
+
+#main .pageLinks {
+  text-align: center;
+  padding: 16px;
   font-size: 18px;
 }
-.quakeEntry:hover {
+#main .pageLinks a {
+  text-decoration: none;
+  color: #F3D4B5;
+}
+#main .pageLinks .pageLink {
+  color: #AD5F55;
+}
+#main .pageLinks .pageLink:hover {
+  color: #F3D4B5;
+}
+#main .pageLinks .currPage {
+  color: #FBF9EC;
+}
+
+#main .quakes {
+  padding: 16px;
+}
+
+#main .quakeEntry {
+  font-size: 18px;
+  padding: 8px;
+}
+#main .quakeEntry:hover {
   cursor: pointer;
 }
 
-.quakeDetails {
+#main .quakeDetails {
+  margin-top: 8px;
+  margin-left: 8px;
   padding-left: 16px;
+  padding-top: 8px;
+  padding-bottom: 8px;
+  border-left: 4px solid #F3D4B5;
+}
+#main .quakeDetails ul {
+  list-style-type: none;
+}
+#main .quakeDetails ul li {
+  padding: 4px;
+}
+#main .quakeDetails ul li a {
+  text-decoration: none;
+  color: #AD5F55;
+}
+#main .quakeDetails ul li a:hover {
+  color: #F3D4B5;
 }
