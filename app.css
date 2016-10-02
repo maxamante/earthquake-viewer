@@ -25,6 +25,7 @@ html, body {
 
 #main {
   height: 100vh;
+  width: 100%;
 }
 
 #main .titleImg {
@@ -45,7 +46,7 @@ html, body {
   font-family: 'Titillium Web', sans-serif;
   font-weight: 900;
   color: #FBF9EC;
-  font-size: 56pt;
+  font-size: 24pt;
   letter-spacing: 4px;
   position: absolute;
   top: 50%;
@@ -73,6 +74,7 @@ html, body {
 }
 
 #main .listTitle {
+  text-align: center;
   padding-top: 24px;
   padding-left: 16px;
   font-size: 22px;
@@ -101,6 +103,8 @@ html, body {
 
 #main .quakes {
   padding: 16px;
+  width: 95%;
+  margin: 0 auto;
 }
 
 #main .quakeEntry {

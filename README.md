@@ -22,6 +22,7 @@ Run: `npm test`
 - [x] Pagination (__0.2.0__)
   - [ ] Specify amount per page
 - [x] Add testing! (__0.3.0__)
+- [x] Make responsive (__0.4.0__)
 - [ ] Implement refresh every 5 minutes for freshest data
 - [ ] Allow different refresh intervals
 - [ ] Select different time ranges
