@@ -13,15 +13,15 @@ supports ES6. You can check if your browser is compatible [here](https://kangax.
 
 Run: `npm test`
 
-#### Todos
+## Todos
+
+**1.0.0**:
 
 - [x] Barebones application
 - [ ] Prettified application
-
-**1.0.0**:
-- [x] Pagination (0.2.0)
+- [x] Pagination (__0.2.0__)
   - [ ] Specify amount per page
-- [x] Add testing! (0.3.0)
+- [x] Add testing! (__0.3.0__)
 - [ ] Implement refresh every 5 minutes for freshest data
 - [ ] Allow different refresh intervals
 - [ ] Select different time ranges
