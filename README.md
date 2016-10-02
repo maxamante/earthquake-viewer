@@ -18,7 +18,7 @@ Run: `npm test`
 **1.0.0**:
 
 - [x] Barebones application
-- [ ] Prettified application
+- [x] Prettified application
 - [x] Pagination (__0.2.0__)
   - [ ] Specify amount per page
 - [x] Add testing! (__0.3.0__)
