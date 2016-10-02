@@ -199,9 +199,10 @@ const computeBackPage = ns.computeBackPage = function(currPage, totalPages) {
 const initApp = ns.initApp = function(data) {
   // let appNav = buildAppNav();
   // let app = `<div class="nav">${appNav}</div>`;
+  let app = '<div class="titleImg"><span class="title">QuakeLense</span><span class="richterAnim"><svg xmlns="http://www.w3.org/2000/svg" fill="transparent" stroke="#FBF9EC" stroke-width="0.5" viewbox="0 0 128 64" height="300"><path class="richterPath" d="M0 32 L64 32 L68 16 L68 48 L72 12 L72 52 L76 8 L76 56 L80 4 L80 60 L84 0 L84 64 L86 32 L96 32 Z" /></svg></span></div>';
 
   let pageLinks = buildPageLinks();
-  let app = '<div class="title">Earthquakes from the past 30 days:</div>';
+  app += '<div class="listTitle">Earthquakes from the past 30 days:</div>';
   app += `<div class="pageLinks">${pageLinks}</div>`;
   app += '<div class="quakes">';
   app += parseQuakeData(data);
