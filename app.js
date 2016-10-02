@@ -197,11 +197,11 @@ const computeBackPage = ns.computeBackPage = function(currPage, totalPages) {
 };
 
 const initApp = ns.initApp = function(data) {
-  let appNav = buildAppNav();
-  let app = `<div class="nav">${appNav}</div>`;
+  // let appNav = buildAppNav();
+  // let app = `<div class="nav">${appNav}</div>`;
 
   let pageLinks = buildPageLinks();
-  app += '<div class="title">Earthquakes from the past 30 days:</div>';
+  let app = '<div class="title">Earthquakes from the past 30 days:</div>';
   app += `<div class="pageLinks">${pageLinks}</div>`;
   app += '<div class="quakes">';
   app += parseQuakeData(data);
