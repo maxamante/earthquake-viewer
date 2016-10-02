@@ -19,6 +19,6 @@ Version 1:
 - [ ] Add map view
 - [ ] Implement refresh every 5 minutes for freshest data
 - [ ] Allow different refresh intervals
-- [ ] Add testing!
+- [x] Add testing!
 
 &copy; Maxwell Amante 2016.
