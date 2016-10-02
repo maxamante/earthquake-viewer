@@ -120,11 +120,11 @@ const buildAppNav = ns.buildAppNav = function() {
   return nav;
 };
 
-const buildPageLinks = ns.buildPageLinks = function(totalEntries) {
+const buildPageLinks = ns.buildPageLinks = function(totalEntries, currPage) {
   totalEntries = totalEntries || quakeData['features'].length;
+  currPage = currPage || (window.location.hash !== undefined && parseInt(window.location.hash.split('#')[1])) || 1;
 
   const entriesPerPage = 20;
-  const currPage = parseInt(window.location.hash.split('#')[1]) || 1;
   const totalPages = Math.round(totalEntries / entriesPerPage);
 
   let links = `<a href="#1" class="firstPage"><<</a> `;
@@ -150,19 +150,20 @@ const buildPageLinksWithContext = ns.buildPageLinksWithContext = function(currPa
     links[i] = `<a href="#${linkNum}" class="pageLink">${linkNum}</a> | `;
   }
   links[currPage - 1] = `<span class="currPage">${currPage}</span> | `;
-  links[lastLinkNum - 1] = links[lastLinkNum - 1].split('|')[0];
+  links[lastLinkNum - 1] = links[lastLinkNum - 1].split('|')[0].trim();
   return links.join('');
 };
 
 const computePageLinkStartNum = ns.computePageLinkStartNum = function(currPage, totalPages, maxPageLinks) {
   const middleLinkIndex = Math.round(maxPageLinks / 2);
+  let startNum = 0;
   if (currPage >= totalPages - middleLinkIndex + 1) {
-    return totalPages - 9;
+    startNum = totalPages - maxPageLinks;
   }
   else if (currPage >= middleLinkIndex) {
-    return currPage - 5;
+    startNum = currPage - middleLinkIndex;
   }
-  return 0;
+  return startNum;
 };
 
 const computeDate = ns.computeDate = function(timestamp) {
@@ -257,7 +258,6 @@ const main = ns.main = function() {
   });
 
   window.addEventListener('hashchange', handleHashChange, false);
-  return 0;
 };
 main();
 

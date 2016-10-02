@@ -4,7 +4,8 @@
   "description": "ES6-based web application that allows you to view recent earthquake activity",
   "main": "index.html",
   "scripts": {
-    "test": "jest --verbose --no-cache"
+    "test": "jest --verbose --no-cache",
+    "test-coverage": "jest --verbose --no-cache --coverage"
   },
   "repository": {
     "type": "git",
