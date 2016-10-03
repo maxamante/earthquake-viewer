@@ -64,7 +64,7 @@ const $ = ns.$ = window.$ = function(selector) {
 
 // - [ ] Make a request to USGS
 const requestEarthquakeData = ns.requestEarthquakeData = function*(){
-  const quakeEndpoint = 'http://earthquake.usgs.gov/earthquakes/feed/v1.0/summary/all_month.geojson';
+  const quakeEndpoint = 'https://earthquake.usgs.gov/earthquakes/feed/v1.0/summary/all_month.geojson';
   while(true){
     yield fetch(quakeEndpoint, {method: 'get'}).then(function(d){
       return d.json();
